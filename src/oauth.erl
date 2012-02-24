@@ -25,7 +25,7 @@ post(URL, ExtraParams, Consumer, Token, TokenSecret) ->
   post(URL, ExtraParams, Consumer, Token, TokenSecret, []).
 post(URL, ExtraParams, Consumer, Token, TokenSecret, ReqOptions) ->
   SignedParams = signed_params("POST", URL, ExtraParams, Consumer, Token, TokenSecret),
-  oauth_http:post(URL, oauth_uri:params_to_string(SignedParams), ReqOptions).
+  oauth_http:post(URL, oauth_uri:params_to_string(ExtraParams), [header(SignedParams -- ExtraParams)], ReqOptions).
 
 uri(Base, []) ->
   Base;

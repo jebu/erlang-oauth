@@ -1,19 +1,21 @@
 -module(oauth_http).
 
--export([get/1, get/2, get/3, post/2, post/3, response_params/1, response_body/1, response_code/1]).
+-export([get/1, get/2, get/3, post/2, post/3, post/4, response_params/1, response_body/1, response_code/1]).
 
 
 get(URL) ->
   get(URL, []).
 get(URL, Options) ->
-  request(get, {URL, []}, Options).
+  get(URL, [], Options).
 get(URL, Headers, Options) ->
   request(get, {URL, Headers}, Options).
 
 post(URL, Data) ->
   post(URL, Data, []).
 post(URL, Data, Options) ->
-  request(post, {URL, [], "application/x-www-form-urlencoded", Data}, Options).
+  post(URL, Data, [], Options).
+post(URL, Data, Headers, Options) ->
+  request(post, {URL, Headers, "application/x-www-form-urlencoded", Data}, Options).
 
 request(Method, Request, Options) ->
   httpc:request(Method, Request, [{autoredirect, false}], Options).
