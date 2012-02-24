@@ -19,7 +19,7 @@ get(URL, ExtraParams, Consumer, Token, TokenSecret) ->
   get(URL, ExtraParams, Consumer, Token, TokenSecret, []).
 get(URL, ExtraParams, Consumer, Token, TokenSecret, ReqOptions) ->
   SignedParams = signed_params("GET", URL, ExtraParams, Consumer, Token, TokenSecret),
-  oauth_http:get(uri(URL, SignedParams), ReqOptions).
+  oauth_http:get(URL, [header(SignedParams)], ReqOptions).
 
 post(URL, ExtraParams, Consumer, Token, TokenSecret) ->
   post(URL, ExtraParams, Consumer, Token, TokenSecret, []).
