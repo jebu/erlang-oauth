@@ -3,9 +3,11 @@
 -export(
   [ get/5
   , get/6
+  , get/7
   , header/1
   , post/5
   , post/6
+  , post/7
   , signature/5
   , signature_base_string/3
   , signed_params/6
@@ -18,14 +20,19 @@
 get(URL, ExtraParams, Consumer, Token, TokenSecret) ->
   get(URL, ExtraParams, Consumer, Token, TokenSecret, []).
 get(URL, ExtraParams, Consumer, Token, TokenSecret, ReqOptions) ->
+  get(URL, ExtraParams, Consumer, Token, TokenSecret, ReqOptions, []).
+get(URL, ExtraParams, Consumer, Token, TokenSecret, ReqOptions, Headers) ->
   SignedParams = signed_params("GET", URL, ExtraParams, Consumer, Token, TokenSecret),
-  oauth_http:get(URL, [header(SignedParams)], ReqOptions).
+  oauth_http:get(URL, [header(SignedParams) | Headers], ReqOptions).
 
 post(URL, ExtraParams, Consumer, Token, TokenSecret) ->
   post(URL, ExtraParams, Consumer, Token, TokenSecret, []).
 post(URL, ExtraParams, Consumer, Token, TokenSecret, ReqOptions) ->
+  post(URL, ExtraParams, Consumer, Token, TokenSecret, ReqOptions, []).
+post(URL, ExtraParams, Consumer, Token, TokenSecret, ReqOptions, Headers) ->
   SignedParams = signed_params("POST", URL, ExtraParams, Consumer, Token, TokenSecret),
-  oauth_http:post(URL, oauth_uri:params_to_string(ExtraParams), [header(SignedParams -- ExtraParams)], ReqOptions).
+  oauth_http:post(URL, oauth_uri:params_to_string(ExtraParams), 
+    [header(SignedParams -- ExtraParams) | Headers], ReqOptions).
 
 uri(Base, []) ->
   Base;
