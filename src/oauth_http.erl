@@ -18,7 +18,7 @@ post(URL, Data, Headers, Options) ->
   request(post, {URL, Headers, "application/x-www-form-urlencoded", Data}, Options).
 
 request(Method, {URL, Headers, ContentType, Data}, [lhttpc | Options]) ->
-  lhttpc:request(URL, Method, Headers, Data, infinity, Options);
+  lhttpc:request(URL, Method, [{"Content-Type", ContentType} | Headers], Data, infinity, Options);
 request(Method, Request, Options) ->
   httpc:request(Method, Request, [{autoredirect, false}], Options).
 
